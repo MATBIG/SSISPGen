@@ -21,12 +21,12 @@ namespace PckgGenApp.Contoso
 
             Variable v1 = pm.Add_Variable("AuditKey", 0);
             Variable v2 = pm.Add_Variable("maxUdate", "1990-01-01 00:00:00.000");
-            Variable v3 = pm.Add_Variable("SQLCmd", "", true, $"\"SELECT * FROM {pcr.SrcCode} WHERE UDATE > '\" + @[User::maxUdate]" + "+\"'\"");
+            Variable v3 = pm.Add_Variable("SQLCmd", "", true, $"\"SELECT * FROM {pcr.SrcCode} WHERE [UpdateDate] > '\" + @[User::maxUdate]" + "+\"'\"");
 
-            Variable rc1 = pm.Add_Variable("FailedRowsCount", 0);
+            Variable rc1 = pm.Add_Variable("ReadRowsCount", 0);
             Variable rc2 = pm.Add_Variable("InsertRowsCount", 0);
-            Variable rc3 = pm.Add_Variable("ReadRowsCount", 0);
-            Variable rc4 = pm.Add_Variable("UpdateRowsCount", 0);
+            Variable rc3 = pm.Add_Variable("UpdateRowsCount", 0);
+            Variable rc4 = pm.Add_Variable("FailedRowsCount", 0);
 
             //  
             //  --------------------------------------------------------------------
@@ -60,7 +60,7 @@ namespace PckgGenApp.Contoso
             Executable exs3 = pm.AddTask_ExecSQL(
                 "Get MaxDate",
                 "CM_OLEDB_sandbox",
-                $"SELECT ISNULL(MAX(CONVERT(VARCHAR,UDATE,121)),'1990-01-01 00:00:00.000') AS maxUDATE FROM {pcr.DesTable}",
+                $"SELECT ISNULL(MAX(CONVERT(VARCHAR,[UpdateDate],121)),'1990-01-01 00:00:00.000') AS maxUDATE FROM {pcr.DesTable}",
                 null,
                 SqlStatementSourceType.DirectInput,
                 ResultSetType.ResultSetType_SingleRow
@@ -86,6 +86,16 @@ namespace PckgGenApp.Contoso
 
             IDTSComponentMetaData100 com0105 = dm1.AddComp_OleDBDestination("OLEDB Dest", pcr.DesTable, "CM_OLEDB_sandbox", com0104.OutputCollection[0], CreateTableFlag.DropAndCreate);
             string tmpName = dm1.CreateTempTableSQL(pcr.DesTable, "CM_OLEDB_sandbox");
+
+
+            //  
+            //  --------------------------------------------------------------------
+
+            Executable exs3b = pm.AddTask_ExecSQL(
+                "TRUNC temp TAB",
+                "CM_OLEDB_sandbox",
+                $"TRUNCATE TABLE {tmpName};"
+                );
 
             //  ModifyDFT exd2: MERGE DELETE
             //  --------------------------------------------------------------------
@@ -185,17 +195,18 @@ namespace PckgGenApp.Contoso
 
             pm.Modify_ExecSQL_AddParameterBinding(exs6, "User::AuditKey", OleDBDataTypes.LONG);
             pm.Modify_ExecSQL_AddParameterBinding(exs6, "User::ReadRowsCount", OleDBDataTypes.LONG);
-            pm.Modify_ExecSQL_AddParameterBinding(exs6, "User::FailedRowsCount", OleDBDataTypes.LONG);
             pm.Modify_ExecSQL_AddParameterBinding(exs6, "User::InsertRowsCount", OleDBDataTypes.LONG);
             pm.Modify_ExecSQL_AddParameterBinding(exs6, "User::UpdateRowsCount", OleDBDataTypes.LONG);
+            pm.Modify_ExecSQL_AddParameterBinding(exs6, "User::FailedRowsCount", OleDBDataTypes.LONG);
 
             //  ModifyCF - Precedence Constraints
             //  --------------------------------------------------------------------
 
             pm.Add_PrecConstr(exs1, exs2, null, DTSPrecedenceEvalOp.ExpressionAndConstraint, DTSExecResult.Success, "@[$Project::ETLMode] == 1");
-            pm.Add_PrecConstr(exs1, exs3, null, DTSPrecedenceEvalOp.ExpressionAndConstraint, DTSExecResult.Success, "@[$Project::ETLMode] == 3");
+            pm.Add_PrecConstr(exs1, exs3, null, DTSPrecedenceEvalOp.ExpressionAndConstraint, DTSExecResult.Success, "@[$Project::ETLMode] == 2");
             pm.Add_PrecConstr(exs2, exd1, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
-            pm.Add_PrecConstr(exs3, exd2, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
+            pm.Add_PrecConstr(exs3, exs3b, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
+            pm.Add_PrecConstr(exs3b, exd2, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
 
             pm.Add_PrecConstr(exd2, exd3, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
             pm.Add_PrecConstr(exd3, exs4, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);

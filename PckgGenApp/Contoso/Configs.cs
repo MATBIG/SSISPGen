@@ -12,7 +12,7 @@ namespace PckgGenApp.Contoso
         {
             List<ProjectParamConfigRow> lp = new List<ProjectParamConfigRow>
             {
-                new ProjectParamConfigRow("ETLMode", TypeCode.Int32 , "1: Full, 3: Incremental", 3)
+                new ProjectParamConfigRow("ETLMode", TypeCode.Int32 , "1: Full, 2: Inc", 2)
             };
 
             return lp;
@@ -21,8 +21,8 @@ namespace PckgGenApp.Contoso
         {
             List<ConManConfigRow> lp = new List<ConManConfigRow>
             {
-                new ConManConfigRow(@"CM_OLEDB_contoso","OLEDB", @"Data Source=.;Initial Catalog=ContosoRetailDW;Provider=SQLNCLI11.1; Integrated Security=SSPI;Auto Translate=False;"),
-                new ConManConfigRow(@"CM_OLEDB_sandbox","OLEDB", @"Data Source=.;Initial Catalog=sandbox;Provider=SQLNCLI11.1; Integrated Security=SSPI;Auto Translate=False;")
+                new ConManConfigRow(@"CM_OLEDB_contoso","OLEDB", @"Data Source=ITK\DEV17;Initial Catalog=ContosoRetailDW;Provider=SQLNCLI11.1; Integrated Security=SSPI;Auto Translate=False;"),
+                new ConManConfigRow(@"CM_OLEDB_sandbox","OLEDB", @"Data Source=ITK\DEV17;Initial Catalog=SSISPGenDemo;Provider=SQLNCLI11.1; Integrated Security=SSPI;Auto Translate=False;")
             };
 
             return lp;
@@ -31,10 +31,10 @@ namespace PckgGenApp.Contoso
         {
             List<PackageConfigRow> lp = new List<PackageConfigRow>();
 
-            string ConnStr = "Data Source=.;Initial Catalog=sandbox;Integrated Security=SSPI;";
+            string ConnStr = @"Data Source=ITK\DEV17;Initial Catalog=SSISPGenDemo;Integrated Security=SSPI;";
             string queryString =
                 @"
-                    SELECT TOP 1
+                    SELECT
                         [Package]
                     ,   [SrcType]
                     ,   [SrcCode]
@@ -42,7 +42,8 @@ namespace PckgGenApp.Contoso
                     ,   [DesTab]
                     ,   [MasterPackage]
                     ,   [SeqOrder]
-                    FROM [dbo].[PckgGenConfig]
+                    FROM [cfg].[PckgGenConfig]
+                    ORDER BY [ID]
                 ";
 
             SqlConnection cnn = new SqlConnection(ConnStr);

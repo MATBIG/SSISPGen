@@ -8,7 +8,7 @@ namespace PckgGenAppMain
         static void Main(string[] args)
         {
             ILoader c1 = new ContosoLoader();
-            c1.Start(@"C:\Users\kostytom\Desktop\PackageGen\Test.ispac");
+            c1.Start(@"C:\Users\tomek\OneDrive\Desktop\DCDemoSSIS\TesterDC.ispac");
 
             WriteLine("\n\n\n<---- success ---->");
             ReadKey();

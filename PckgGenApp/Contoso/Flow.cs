@@ -1,6 +1,8 @@
 ﻿using PckgGenAppMain;
 using PckgGenLib.NSProjectGenerator;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace PckgGenApp.Contoso
 {
     partial class ContosoLoader : ILoader
@@ -24,9 +26,8 @@ namespace PckgGenApp.Contoso
 
             pg.AddProjectParams(pars);
             pg.AddConManagers(coms);
-            pg.AddPackages(packs, FullOrMerge);
-
-            // odpalić dwa razy dla paczek generowanych różnymi funkcjami
+            pg.AddPackages(packs.Where(p => p.Name.StartsWith("Dim")).ToList(), FullOrMerge);
+            pg.AddPackages(packs.Where(p => p.Name.StartsWith("Fact")).ToList(), FullOrIncremental);
 
             pg.AddMasterPackages(packs);
 

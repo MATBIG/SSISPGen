@@ -19,7 +19,7 @@ namespace PckgGenApp.Contoso
 
             Variable v1 = pm.Add_Variable("AuditKey", 0);
             Variable v2 = pm.Add_Variable("maxUdate", "1990-01-01 00:00:00.000");
-            Variable v3 = pm.Add_Variable("SQLCmd", "", true, $"\"SELECT * FROM {pcr.SrcCode} WHERE UDATE > '\" + @[User::maxUdate]" + "+\"'\"");
+            Variable v3 = pm.Add_Variable("SQLCmd", "", true, $"\"SELECT * FROM {pcr.SrcCode} WHERE [UpdateDate] > '\" + @[User::maxUdate]" + "+\"'\"");
 
             Variable rc1 = pm.Add_Variable("FailedRowsCount", 0);
             Variable rc2 = pm.Add_Variable("InsertRowsCount", 0);
@@ -58,7 +58,7 @@ namespace PckgGenApp.Contoso
             Executable exs3 = pm.AddTask_ExecSQL(
                 "Get MaxDate",
                 "CM_OLEDB_sandbox",
-                $"SELECT ISNULL(MAX(CONVERT(VARCHAR,UDATE,121)),'1990-01-01 00:00:00.000') AS maxUDATE FROM {pcr.DesTable}",
+                $"SELECT ISNULL(MAX(CONVERT(VARCHAR,[UpdateDate],121)),'1990-01-01 00:00:00.000') AS maxUDATE FROM {pcr.DesTable}",
                 null,
                 SqlStatementSourceType.DirectInput,
                 ResultSetType.ResultSetType_SingleRow
@@ -111,15 +111,15 @@ namespace PckgGenApp.Contoso
 
             pm.Modify_ExecSQL_AddParameterBinding(exs4, "User::AuditKey", OleDBDataTypes.LONG);
             pm.Modify_ExecSQL_AddParameterBinding(exs4, "User::ReadRowsCount", OleDBDataTypes.LONG);
-            pm.Modify_ExecSQL_AddParameterBinding(exs4, "User::FailedRowsCount", OleDBDataTypes.LONG);
             pm.Modify_ExecSQL_AddParameterBinding(exs4, "User::InsertRowsCount", OleDBDataTypes.LONG);
             pm.Modify_ExecSQL_AddParameterBinding(exs4, "User::UpdateRowsCount", OleDBDataTypes.LONG);
+            pm.Modify_ExecSQL_AddParameterBinding(exs4, "User::FailedRowsCount", OleDBDataTypes.LONG);
 
             //  ModifyCF - Precedence Constraints
             //  --------------------------------------------------------------------
 
             pm.Add_PrecConstr(exs1, exs2, null, DTSPrecedenceEvalOp.ExpressionAndConstraint, DTSExecResult.Success, "@[$Project::ETLMode] == 1");
-            pm.Add_PrecConstr(exs1, exs3, null, DTSPrecedenceEvalOp.ExpressionAndConstraint, DTSExecResult.Success, "@[$Project::ETLMode] == 3");
+            pm.Add_PrecConstr(exs1, exs3, null, DTSPrecedenceEvalOp.ExpressionAndConstraint, DTSExecResult.Success, "@[$Project::ETLMode] == 2");
             pm.Add_PrecConstr(exs2, exd1, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
             pm.Add_PrecConstr(exs3, exd2, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success);
             pm.Add_PrecConstr(exd1, exs4, null, DTSPrecedenceEvalOp.Constraint, DTSExecResult.Success, null, false);

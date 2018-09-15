@@ -65,6 +65,8 @@ namespace PckgGenLib.NSProjectGenerator
 
                 pt.Name = pkcon.Name;
                 prj.PackageItems.Add(pt, pkcon.Name + ".dtsx");
+
+                Console.WriteLine($"{DateTime.Now}:\t{pt.Name}");
             }
         }
 
