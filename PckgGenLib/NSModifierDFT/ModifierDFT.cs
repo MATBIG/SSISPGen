@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Data;
+﻿using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 using Microsoft.SqlServer.Dts.Runtime;
-using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 
 namespace PckgGenLib.NSModifierDFT
 {

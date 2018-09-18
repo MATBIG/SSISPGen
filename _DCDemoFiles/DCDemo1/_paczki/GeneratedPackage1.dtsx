@@ -1,0 +1,565 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/18/2018 10:30:20 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ITK"
+  DTS:CreatorName="ITK\tomek"
+  DTS:DTSID="{AA0745C9-06DA-453E-9692-673F775AF96E}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3002.113"
+  DTS:LocaleID="1045"
+  DTS:ObjectName="{AA0745C9-06DA-453E-9692-673F775AF96E}"
+  DTS:VersionGUID="{131666D2-3513-49F7-954A-EEDF5FEA432F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ConnToContoso]"
+      DTS:CreationName="OLEDB"
+      DTS:Description="testowy CM na poziomie paczki"
+      DTS:DTSID="{126A6D72-0E0C-44E1-BCD8-043DA899585D}"
+      DTS:ObjectName="ConnToContoso">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=ITK\DEV17;Initial Catalog=ContosoRetailDW;Provider=SQLNCLI11.1; Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6D080E95-9FD7-4C73-960C-11C6044E095C}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="dummySQLcmd">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT 1 AS [dummy]</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\seq1"
+      DTS:CreationName="STOCK:Sequence"
+      DTS:DTSID="{5376FF19-33F9-4D0A-9503-670EADC9F740}"
+      DTS:ExecutableType="STOCK:Sequence"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="seq1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\seq1\Nazwa ESQL"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{F0101F4F-6863-4BC2-82AE-D8ACB4C2AD7F}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Nazwa ESQL"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{126A6D72-0E0C-44E1-BCD8-043DA899585D}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::dummySQLcmd" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\seq2A"
+      DTS:CreationName="STOCK:Sequence"
+      DTS:DTSID="{F022F9A4-AE4D-4C99-AF10-2150021ED4C5}"
+      DTS:ExecutableType="STOCK:Sequence"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="seq2A">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\seq2A\DFT 01"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{713D1A8D-4AAF-4898-A421-FB44B85235EC}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT 01"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\seq2A\DFT 01\bloczek OLEDBSource"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="bloczek OLEDBSource"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[DimAccount]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1250</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">0</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[ConnToContoso]"
+                      connectionManagerRefId="Package.ConnectionManagers[ConnToContoso]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountKey]"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountKey]"
+                          name="AccountKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[ParentAccountKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[ParentAccountKey]"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[ParentAccountKey]"
+                          name="ParentAccountKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountLabel]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountLabel]"
+                          length="100"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountLabel]"
+                          name="AccountLabel"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountName]"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountName]"
+                          name="AccountName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountDescription]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountDescription]"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountDescription]"
+                          name="AccountDescription"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountType]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountType]"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[AccountType]"
+                          name="AccountType"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[Operator]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[Operator]"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[Operator]"
+                          name="Operator"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[CustomMembers]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[CustomMembers]"
+                          length="300"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[CustomMembers]"
+                          name="CustomMembers"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[ValueType]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[ValueType]"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[ValueType]"
+                          name="ValueType"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[CustomMemberOptions]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[CustomMemberOptions]"
+                          length="200"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[CustomMemberOptions]"
+                          name="CustomMemberOptions"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[ETLLoadID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[ETLLoadID]"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[ETLLoadID]"
+                          name="ETLLoadID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[LoadDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[LoadDate]"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[LoadDate]"
+                          name="LoadDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[UpdateDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[UpdateDate]"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[UpdateDate]"
+                          name="UpdateDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[OID]"
+                          dataType="guid"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[OID]"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].Columns[OID]"
+                          name="OID"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountKey]"
+                          dataType="i4"
+                          name="AccountKey" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[ParentAccountKey]"
+                          dataType="i4"
+                          name="ParentAccountKey" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountLabel]"
+                          dataType="wstr"
+                          length="100"
+                          name="AccountLabel" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountName]"
+                          dataType="wstr"
+                          length="50"
+                          name="AccountName" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountDescription]"
+                          dataType="wstr"
+                          length="50"
+                          name="AccountDescription" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[AccountType]"
+                          dataType="wstr"
+                          length="50"
+                          name="AccountType" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[Operator]"
+                          dataType="wstr"
+                          length="50"
+                          name="Operator" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[CustomMembers]"
+                          dataType="wstr"
+                          length="300"
+                          name="CustomMembers" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[ValueType]"
+                          dataType="wstr"
+                          length="50"
+                          name="ValueType" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[CustomMemberOptions]"
+                          dataType="wstr"
+                          length="200"
+                          name="CustomMemberOptions" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[ETLLoadID]"
+                          dataType="i4"
+                          name="ETLLoadID" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[LoadDate]"
+                          dataType="dbTimeStamp"
+                          name="LoadDate" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[UpdateDate]"
+                          dataType="dbTimeStamp"
+                          name="UpdateDate" />
+                        <externalMetadataColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output].ExternalColumns[OID]"
+                          dataType="guid"
+                          name="OID" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountKey]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountKey]"
+                          name="AccountKey" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ParentAccountKey]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ParentAccountKey]"
+                          name="ParentAccountKey" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountLabel]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountLabel]"
+                          name="AccountLabel" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountName]"
+                          name="AccountName" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountDescription]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountDescription]"
+                          name="AccountDescription" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountType]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[AccountType]"
+                          name="AccountType" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[Operator]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[Operator]"
+                          name="Operator" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[CustomMembers]"
+                          dataType="wstr"
+                          length="300"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[CustomMembers]"
+                          name="CustomMembers" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ValueType]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ValueType]"
+                          name="ValueType" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[CustomMemberOptions]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[CustomMemberOptions]"
+                          name="CustomMemberOptions" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ETLLoadID]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ETLLoadID]"
+                          name="ETLLoadID" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[LoadDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[LoadDate]"
+                          name="LoadDate" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[UpdateDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[UpdateDate]"
+                          name="UpdateDate" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[OID]"
+                          dataType="guid"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[OID]"
+                          name="OID" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\seq2A\DFT 01\DRV kolumn"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="DRV kolumn"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\seq2A\DFT 01\DRV kolumn.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\seq2A\DFT 01\DRV kolumn.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Output].Columns[Nowa]"
+                          dataType="i4"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Output].Columns[Nowa]"
+                          name="Nowa"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              name="Expression">1</property>
+                            <property
+                              dataType="System.String"
+                              name="FriendlyExpression">1</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\seq2A\DFT 01\DRV kolumn.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\seq2A\DFT 01\DRV kolumn.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\seq2A\DFT 01.Paths[OLE DB Source Output]"
+                  endId="Package\seq2A\DFT 01\DRV kolumn.Inputs[Derived Column Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\seq2A\DFT 01\bloczek OLEDBSource.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\seq2B"
+      DTS:CreationName="STOCK:Sequence"
+      DTS:DTSID="{9E9F1D95-5FFD-45CB-916B-6B083FA7E555}"
+      DTS:ExecutableType="STOCK:Sequence"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="seq2B">
+      <DTS:Variables />
+      <DTS:Executables />
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{7F5D9AEC-9744-469D-AA60-8BD8CF41BD1C\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{7F5D9AEC-9744-469D-AA60-8BD8CF41BD1C}"
+      DTS:From="Package\seq1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{7F5D9AEC-9744-469D-AA60-8BD8CF41BD1C}"
+      DTS:To="Package\seq2B"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{868CF8DA-3483-47EF-B2C8-D23E0F4694F8\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{868CF8DA-3483-47EF-B2C8-D23E0F4694F8}"
+      DTS:From="Package\seq1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{868CF8DA-3483-47EF-B2C8-D23E0F4694F8}"
+      DTS:To="Package\seq2A" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

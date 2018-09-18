@@ -13,8 +13,10 @@ namespace PckgGenLib.NSProjectGenerator
     public class ProjectGenerator: IProjectGenerator
     {
         private EmbeddedResourceReader er;
-        private string tempIspacPath;
+        private readonly string tempIspacPath;
+
         private Project prj;
+        public Project Prj() { return prj; }
 
         public ProjectGenerator()
         {
